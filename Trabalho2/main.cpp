@@ -4,6 +4,7 @@
 #include <cmath>
 #include <algorithm>
 #include <iomanip>
+#include <chrono> // Biblioteca mantida para o cronômetro
 
 using namespace std;
 
@@ -141,6 +142,11 @@ int main() {
         cin >> cidades[i].id >> cidades[i].x >> cidades[i].y;
     }
 
+    // ==========================================
+    // CRONÔMETRO INICIA AQUI (Após ler o arquivo)
+    // ==========================================
+    auto inicio = chrono::high_resolution_clock::now();
+
     // 2. Execução do Twice-Around-the-Tree
     vector<vector<int>> adj_mst(dimensao);
     gerar_mst_prim(dimensao, cidades, adj_mst);
@@ -155,6 +161,15 @@ int main() {
 
     // 4. Cálculo do custo final do circuito fechado
     long long peso_total = calcular_custo_tour(tour, cidades);
+
+    // ==========================================
+    // CRONÔMETRO FINALIZA AQUI
+    // ==========================================
+    auto fim = chrono::high_resolution_clock::now();
+    chrono::duration<double, milli> tempo_gasto = fim - inicio;
+    
+    // Exibe o tempo gasto no fluxo de erro (mostra na tela, mas não salva no arquivo .tour)
+    cerr << "Tempo de execucao (" << nome_instancia << "): " << fixed << setprecision(3) << tempo_gasto.count() << " ms\n";
 
     // 5. Impressão estritamente formatada exigida pelo enunciado
     cout << "NAME: " << nome_instancia << "\n";
